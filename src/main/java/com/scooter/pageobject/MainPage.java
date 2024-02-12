@@ -43,22 +43,13 @@ public class MainPage extends BasePage {
         return driver.findElements(answerList);
     }
 
-    //Нажать на кнопку вверху страницы
-    public void clickOrderButtonTop() {
-        driver.findElement(orderButtonTop).click();
-    }
-
-    //Нажать на кнопку внизу страницы
-    public void clickOrderButtonBottom() {
-        WebElement element = driver.findElement(orderButtonBottom);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
-        driver.findElement(orderButtonBottom).click();
-    }
     //Нажать на первую или вторую кнопку "Заказать" в зависимости от параметра
     public void clickOrderButton(int indexButton) {
         if (indexButton == 0) {
             driver.findElement(orderButtonTop).click();
         } else {
+            WebElement element = driver.findElement(orderButtonBottom);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
             driver.findElement(orderButtonBottom).click();
         }
     }

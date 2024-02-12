@@ -13,12 +13,10 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.time.Duration;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class OrderPositiveTest{
