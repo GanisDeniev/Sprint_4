@@ -12,6 +12,8 @@ import org.junit.runners.Parameterized;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.time.Duration;
 
@@ -60,7 +62,8 @@ public class OrderPositiveTest{
 
     @Before
     public void setUp() {
-        driver = new ChromeDriver();
+        String browser = System.getenv("BROWSER");
+        driver = getDriver(browser == null ? "chrome" : browser);
         driver.get(BasePage.URL);
 
         setCookie(new Cookie("Cartoshka","true"));
@@ -71,26 +74,31 @@ public class OrderPositiveTest{
         driver.manage().addCookie(cookie);
         driver.navigate().refresh();
     }
+
+    //Поддержка разных браузеров
+    private WebDriver getDriver(String browser) {
+        switch (browser.toLowerCase()) {
+            case "chrome":
+                return new ChromeDriver();
+
+            case "firefox":
+                return new FirefoxDriver();
+            default:
+                throw new IllegalArgumentException("Unsupported browser");
+        }
+    }
     //Проверка позитивного сценария по кнопкам "Заказать"
     @Test
     public void orderScooterPositiveCase() {
         MainPage mainPage = new MainPage(driver);
-        if (indexButton == 0) {
-            mainPage.clickOrderButtonTop();
+
+            mainPage.clickOrderButton(indexButton);
             OrderPage orderPage = new OrderPage(driver);
             orderPage.fillOrderFormFirstPage(name, surname, address, stationIndex, phone);
             orderPage.fillOrderFormSecondPage(date, duration, color, comment);
             orderPage.clickConfirmOrderButton();
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
             MatcherAssert.assertThat(orderPage.getTextAboutOrderResult(), containsString("Заказ оформлен"));
-        } else {
-            mainPage.clickOrderButtonBottom();
-            OrderPage orderPage = new OrderPage(driver);
-            boolean addressInput = orderPage.getPhoneInput().isDisplayed();
-            assertTrue( "на странице нет поля для ввода номера телефона",addressInput);
-
-        }
-
     }
 
     @After

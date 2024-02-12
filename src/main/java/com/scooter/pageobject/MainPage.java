@@ -54,6 +54,14 @@ public class MainPage extends BasePage {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
         driver.findElement(orderButtonBottom).click();
     }
+    //Нажать на первую или вторую кнопку "Заказать" в зависимости от параметра
+    public void clickOrderButton(int indexButton) {
+        if (indexButton == 0) {
+            driver.findElement(orderButtonTop).click();
+        } else {
+            driver.findElement(orderButtonBottom).click();
+        }
+    }
     //Ожидание элемента на странице
     public WebElement waitForElementToBeVisible(WebElement element) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
